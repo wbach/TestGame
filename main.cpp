@@ -16,10 +16,11 @@ void MemoryTest()
 		}
 		virtual int		Initialize()
 		{
-			AddEntity("../Data/Meshes/smallHouse1/smallHouse1.obj");
+			AddEntity("../Data/Example/monkey.obj");
+			/*AddEntity("../Data/Meshes/smallHouse1/smallHouse1.obj");
 			AddEntity("../Data/Meshes/G3_Myrtana_Castle_Mainhouse/G3_Myrtana_Castle_Mainhouse.obj");
 			AddEntity("../Data/Meshes/fishingHouse/fishingHouse.obj");
-			AddEntity("../Data/Meshes/alchemTable/alchemTable.obj");
+			AddEntity("../Data/Meshes/alchemTable/alchemTable.obj");*/
 			m_Camera = std::make_unique<CFirstPersonCamera>(&engine.m_InputManager, &engine.m_DisplayManager);
 			return 0;
 		}
@@ -37,8 +38,11 @@ void MemoryTest()
 	};
 	engine.Init();
 
-	for (int x = 0; x < 10000000000000; x++)
+	long long i = 0;
+	while(1)
 	{
+		std::cout << "Reply: "<< i++ << std::endl;
+
 		if (engine.m_Scene != nullptr)
 			engine.m_Scene.reset();
 		engine.m_Scene = std::make_unique<TestScene>();
@@ -57,10 +61,11 @@ void TestGameStart()
 		}
 		virtual int		Initialize()
 		{
-			AddEntity("../Data/Meshes/smallHouse1/smallHouse1.obj");
-			AddEntity("../Data/Meshes/G3_Myrtana_Castle_Mainhouse/G3_Myrtana_Castle_Mainhouse.obj");
-			AddEntity("../Data/Meshes/fishingHouse/fishingHouse.obj");
-			AddEntity("../Data/Meshes/alchemTable/alchemTable.obj");
+			AddEntity("../Data/Meshes/Crate/crate.obj");
+			//AddEntity("../Data/Meshes/smallHouse1/smallHouse1.obj");
+		//	AddEntity("../Data/Meshes/G3_Myrtana_Castle_Mainhouse/G3_Myrtana_Castle_Mainhouse.obj");
+			//AddEntity("../Data/Meshes/fishingHouse/fishingHouse.obj");
+			//AddEntity("../Data/Meshes/alchemTable/alchemTable.obj");*/
 			m_Camera = std::make_unique<CFirstPersonCamera>(&engine.m_InputManager, &engine.m_DisplayManager);
 			return 0;
 		}
@@ -74,23 +79,20 @@ void TestGameStart()
 			}
 			return 0;
 		}
-
 	};
 	engine.Init();
 
-	for (int x = 0; x < 10000000000000; x++)
-	{
-		if (engine.m_Scene != nullptr)
-			engine.m_Scene.reset();
-		engine.m_Scene = std::make_unique<TestScene>();
-		engine.PreperaScene();
-		engine.GameLoop();
-	}
+	if (engine.m_Scene != nullptr)
+		engine.m_Scene.reset();
+	engine.m_Scene = std::make_unique<TestScene>();
+	engine.PreperaScene();
+	engine.GameLoop();
+
 }
 
 int main(int argc, char* argv[])
 {	
-	MemoryTest();
-
+	//MemoryTest();
+	TestGameStart();
 	return 0;
 }
