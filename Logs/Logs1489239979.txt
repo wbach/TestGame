@@ -1,0 +1,18 @@
+GL version: 4.5.0 NVIDIA 376.53
+GLSL version: 4.50 NVIDIA
+Max supported patch vertices :32
+CTerrainRenderer initialized.
+CEntityRenderer initialized.
+CLightPassRenderer initialized.
+FullRenderer initialized.
+../Data/Meshes/Crate/crate.obj succesful loaded
+[Error] wrong image format or file does not exist.../Data/Textures/Triss_Diff.tga
+[Error] OGL There was an error loading the texture : ../Data/Textures/Triss_Diff.tga
+../Data/Meshes/Triss/Triss.obj succesful loaded
+../Data/Meshes/smallHouse1/smallHouse1.obj succesful loaded
+../Data/Example/quad.obj succesful loaded
+Scene loading time: 18.125999s.
+Destructor my model : ../Data/Meshes/Crate/crate.obj
+Destructor my model : ../Data/Meshes/Triss/Triss.obj
+Destructor my model : ../Data/Meshes/smallHouse1/smallHouse1.obj
+Destructor my model : ../Data/Example/quad.obj

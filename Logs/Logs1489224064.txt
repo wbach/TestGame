@@ -1,0 +1,11 @@
+GL version: 4.5.0 NVIDIA 376.53
+GLSL version: 4.50 NVIDIA
+Max supported patch vertices :32
+CTerrainRenderer initialized.
+CEntityRenderer initialized.
+CLightPassRenderer initialized.
+FullRenderer initialized.
+../Data/Meshes/Crate/crate.obj succesful loaded
+../Data/Meshes/smallHouse1/smallHouse1.obj succesful loaded
+../Data/Example/quad.obj succesful loaded
+Scene loading time: 3.615000s.
