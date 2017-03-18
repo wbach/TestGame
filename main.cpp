@@ -55,12 +55,13 @@ void MemoryTest()
 }
 void TestGameStart()
 {
-	static CEngine engine("Test Game - Open GL", 1366, 768, false);
+    static CEngine engine("Test Game - Open GL", 1000, 600, false);
 
 	class TestScene : public CScene
 	{
 		CPlayer* player;
 		CTerrain *terrain;
+        double time_clock = 0;
 	public:
 		TestScene()
 		{
@@ -91,23 +92,37 @@ void TestGameStart()
 			terrain->LoadHeight(height_map);
 
 			std::vector<float> grass_position;
-			for(unsigned int y = 0 ; y < 100; y += 2)
-				for (unsigned int x = 0; x < 100; x += 2)
-				{
-					grass_position.push_back(x);
-					grass_position.push_back(terrain->GetHeightofTerrain(x, y));
-					grass_position.push_back(y);
-				}
+          //  grass_position.reserve(100 * 100);
 
-			//CGrass* grass = new CGrass();
-			//grass->model = new CModel();
-			//auto mesh = grass->model->AddMesh(grass_position, std::vector<float>(), std::vector<float>(), std::vector<float>(), std::vector<int>());
-			////mesh->
-			//m_ResourceManager.AddModel(grass->model);
-			//engine.m_Renderer->Subscribe(grass);
+            for(float y = 0.f ; y < 200.f; y += 1.5f)
+            {
+                for (float x = 0.f; x < 200.f; x += 1.5f)
+				{
+                    grass_position.push_back(x + ((rand() % 200 - 100) / 100.f));
+                    grass_position.push_back(terrain->GetHeightofTerrain(x, y) + 1.f);
+                    grass_position.push_back(y + ((rand() % 200 - 100) / 100.f));
+				}
+            }
+            std::cout << "Grass size : " << grass_position.size() << std::endl;
+            //*
+
+            std::vector<unsigned short> indicies;
+
+            CGrass* grass = new CGrass();
+            grass->model = new CModel();
+            SMaterial grass_material;
+            grass_material.m_DiffuseTexture = m_ResourceManager.GetTextureLaoder().LoadTexture("../Data/Textures/G3_Nature_Plant_Grass_06_Diffuse_01.png");
+            std::vector<float> empty_float_vec;
+            std::vector<SVertexBoneData> empty_bones;
+            auto mesh = grass->model->AddMesh(grass_position, empty_float_vec, empty_float_vec, empty_float_vec, indicies, grass_material, empty_bones);
+            //m_ResourceManager.GetOpenGlLoader().AddObjectToOpenGLLoadingPass(grass->model);
+            m_ResourceManager.AddModel(grass->model);
+            engine.m_Renderer->Subscribe(grass);
+            //*/
 			//m_Texture = scene->GetResourceManager().GetTextureLaoder().LoadTextureImmediately("../Data/Textures/G3_Nature_Plant_Grass_06_Diffuse_01.png");			
-	
-			/*grassvertex.resize(positions.size() * 3);
+
+            /*
+            grassvertex.reserve(positions.size() * 3);
 			for (const auto& v : positions)
 			{
 				grassvertex.push_back(v.x);
@@ -117,7 +132,7 @@ void TestGameStart()
 			m_MeshVao = Utils::CreateVao();
 			m_VertexSize = grassvertex.size() / 3;
 			m_VertexVbo = Utils::StoreDataInAttributesList(0, 3, grassvertex);
-			Utils::UnbindVao();*/
+            Utils::UnbindVao();//*/
 
 			terrain->model = m_ResourceManager.LoadModel("../Data/Example/quad.obj");
 			m_ResourceManager.GetOpenGlLoader().AddObjectToOpenGLLoadingPass(terrain->model);
@@ -133,8 +148,8 @@ void TestGameStart()
 			//AddEntity("../Data/Meshes/fishingHouse/fishingHouse.obj");
 			//AddEntity("../Data/Meshes/alchemTable/alchemTable.obj");*/
 			
-			m_DayNightCycle.SetDirectionalLight(&m_DirectionalLight);
-			m_DayNightCycle.SetTime(.5f);
+            m_DayNightCycle.SetDirectionalLight(&m_DirectionalLight);
+            m_DayNightCycle.SetTime(.5f);
 
 			m_Camera = std::make_unique<CFirstPersonCamera>(&engine.m_InputManager, &engine.m_DisplayManager);
 
@@ -152,7 +167,15 @@ void TestGameStart()
 			m_DeltaTime = static_cast<float>(engine.m_DisplayManager.GetDeltaTime());
 			m_GloabalTime += m_DeltaTime;
 
-			//std::cout << "Global Time : " << m_DayNightCycle.GetHours() << " : " << m_DayNightCycle.GetMinutes() << " : " << m_DayNightCycle.GetSeconds() << "\n";
+            time_clock += m_DeltaTime;
+            if(time_clock > 1.f)
+            {
+                int hour = 0, minutes = 0;
+                m_DayNightCycle.GetCurrentHour(hour, minutes);
+                std::cout << "Game Time : " << hour << " : " << minutes << "\n";
+                Utils::PrintVector("Light position : ", this->m_DirectionalLight.GetPosition());
+                time_clock = 0;
+            }
 
 			m_DayNightCycle.Update(m_DeltaTime);
 
@@ -180,8 +203,6 @@ void TestGameStart()
 
 int main(int argc, char* argv[])
 {	
-
-	
 	//MemoryTest();
 	CLogger::Instance().EnableLogs();
 	TestGameStart();
