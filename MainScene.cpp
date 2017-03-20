@@ -29,9 +29,9 @@ int MainScene::Initialize()
     m_DayNightCycle.SetDirectionalLight(&m_DirectionalLight);
     m_DayNightCycle.SetTime(.5f);
 
-    m_Camera = std::make_unique<CFirstPersonCamera>(&engine.m_InputManager, &engine.m_DisplayManager);
+    //m_Camera = std::make_unique<CFirstPersonCamera>(&engine.m_InputManager, &engine.m_DisplayManager);
 
-    //m_Camera = std::make_unique<CThirdPersonCamera>(&engine.m_InputManager, player->m_WorldTransform);
+    m_Camera = std::make_unique<CThirdPersonCamera>(&engine.m_InputManager, player->m_WorldTransform);
     return 0;
 }
 
@@ -60,13 +60,17 @@ int MainScene::Update()
     player->Move(m_DeltaTime);
     player->CheckInputs();
 
-    auto height = terrain->GetHeightofTerrain(player->m_WorldTransform.GetPositionXZ());
-    auto ppos = player->m_WorldTransform.GetPosition();
-    if (ppos.y < height)
+    if(terrain != nullptr)
     {
-        ppos.y = height;
-        player->SetPosition(ppos);
+        auto height = terrain->GetHeightofTerrain(player->m_WorldTransform.GetPositionXZ());
+        auto ppos = player->m_WorldTransform.GetPosition();
+        if (ppos.y < height)
+        {
+            ppos.y = height;
+            player->SetPosition(ppos);
+        }
     }
+
     return 0;
 }
 
@@ -85,6 +89,12 @@ std::map<CTerrain::TexturesTypes, std::string> MainScene::CreateTerrainTexturesM
 
 void MainScene::AddTerrain(std::map<CTerrain::TexturesTypes, std::string> &textures)
 {
+    if(textures[CTerrain::displacementMap].empty())
+    {
+        Error("Displacement map is not set while creating terrain.");
+        return;
+    }
+
     terrain = new CTerrain();
     for(const auto& t : textures)
          terrain->SetTexture(m_ResourceManager.GetTextureLaoder().LoadTexture(t.second), t.first);
@@ -113,7 +123,8 @@ void MainScene::AddGrass()
         for (float x = 0.f; x < 200.f; x += 1.5f)
         {
             grass_position.push_back(x + ((rand() % 200 - 100) / 100.f));
-            grass_position.push_back(terrain->GetHeightofTerrain(x, y) + 1.f);
+            auto height = terrain != nullptr ? terrain->GetHeightofTerrain(x, y) : 0;
+            grass_position.push_back(height + 1.f);
             grass_position.push_back(y + ((rand() % 200 - 100) / 100.f));
         }
     }

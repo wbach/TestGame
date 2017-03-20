@@ -4,7 +4,7 @@
 
 void MemoryTest()
 {
-	static CEngine engine("Test Game - Open GL", 640, 480, false);
+    static CEngine engine;
 
 	class TestScene : public CScene
 	{
@@ -49,7 +49,7 @@ void MemoryTest()
 }
 void TestGameStart()
 {
-    static CEngine engine("Test Game - Open GL", 1200, 700, false);
+    CEngine engine;
 	engine.Init();
     engine.m_Scene = std::make_unique<MainScene>(engine);
 	engine.PreperaScene();
