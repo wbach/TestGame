@@ -4,10 +4,25 @@
 #include "../GameEngine/Objects/RenderAble/Grass.h"
 #include "../GameEngine/Camera/FirstPersonCamera.h"
 #include "../GameEngine/Camera/ThridPersonCamera.h"
+#include "../GameEngine/Renderers/GUI/GuiRenderer.h"
+#include "../GameEngine/Renderers/GUI/Text/GuiText.h"
 
 MainScene::MainScene(CEngine &engine)
     : engine(engine)
 {
+	CGUIRenderer* gui_renderer = new CGUIRenderer();
+	auto guiText = new CGuiText("../Data/GUI/consola.ttf", engine.m_Projection.GetWindowSize());
+	gui_renderer->AddElement(guiText);
+
+	SGuiTextElement score;
+	score.text = "Test text tralala\nNowa Linia :)\nI nastepna ;d";
+	score.colour = glm::vec3(0, 162.f / 255.f, 232.f / 255.f);
+
+	score.position = glm::vec2(-0.55, -0.0);
+	guiText->texts["Line_p1"] = score;
+
+	engine.m_Renderers.emplace_back(gui_renderer);
+	gui_renderer->Init();
 }
 
 MainScene::~MainScene()
@@ -36,7 +51,8 @@ int MainScene::Initialize()
 
     //m_Camera = std::make_unique<CFirstPersonCamera>(&engine.m_InputManager, &engine.m_DisplayManager);
 
-    m_Camera = std::make_unique<CThirdPersonCamera>(&engine.m_InputManager, player->m_WorldTransform);
+    m_Camera = std::make_unique<CThirdPersonCamera>(&engine.m_InputManager, player->m_WorldTransform);	
+
     return 0;
 }
 
