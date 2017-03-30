@@ -1,12 +1,12 @@
 #pragma once
-#include "../GameEngine/Engine/Engine.h"
 #include "../GameEngine/Scene/Scene.hpp"
-#include "../GameEngine/Objects/RenderAble/Grass.h"
-#include "../GameEngine/Camera/FirstPersonCamera.h"
-#include "../GameEngine/Camera/ThridPersonCamera.h"
 #include "../GameEngine/Objects/RenderAble/Terrain.h"
 #include "Player.h"
 #include <map>
+
+class CPlayer;
+class CEngine;
+
 class MainScene : public CScene
 {
 public:

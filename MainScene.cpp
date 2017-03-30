@@ -1,4 +1,9 @@
 #include "MainScene.h"
+#include "../GameEngine/Utils/GLM/GLMUtils.h"
+#include "../GameEngine/Engine/Engine.h"
+#include "../GameEngine/Objects/RenderAble/Grass.h"
+#include "../GameEngine/Camera/FirstPersonCamera.h"
+#include "../GameEngine/Camera/ThridPersonCamera.h"
 
 MainScene::MainScene(CEngine &engine)
     : engine(engine)
@@ -13,14 +18,14 @@ MainScene::~MainScene()
 int MainScene::Initialize()
 {
     auto crate = AddGameObject(new CEntity(m_ResourceManager, "../Data/Meshes/Crate/crate.obj", glm::vec3(0, 2, 0)), glm::vec3(0,0, -5));
-    engine.m_Renderer->Subscribe(crate);
+    engine.m_Renderers[0]->Subscribe(crate);
 
     player = new CPlayer(&engine.m_InputManager, m_ResourceManager, "../Data/Meshes/Triss/Triss.obj", glm::vec3(0, 2, 0)), glm::vec3(0, 0, 0);
     AddGameObject(player);
-    engine.m_Renderer->Subscribe(player);
+    engine.m_Renderers[0]->Subscribe(player);
 
     auto small_house = AddGameObject(new CEntity(m_ResourceManager, "../Data/Meshes/smallHouse1/smallHouse1.obj", glm::vec3(0,5,0)), glm::vec3(0.f, 0.f, -5.f));
-    engine.m_Renderer->Subscribe(small_house);
+    engine.m_Renderers[0]->Subscribe(small_house);
 
     auto terrain_textures = CreateTerrainTexturesMap();
     AddTerrain(terrain_textures);
@@ -107,7 +112,7 @@ void MainScene::AddTerrain(std::map<CTerrain::TexturesTypes, std::string> &textu
     m_ResourceManager.GetOpenGlLoader().AddObjectToOpenGLLoadingPass(terrain->model);
 
     AddGameObject(terrain, glm::vec3(0.f, 0.f, 0.f));
-    engine.m_Renderer->Subscribe(terrain);
+    engine.m_Renderers[0]->Subscribe(terrain);
 }
 
 void MainScene::AddGrass()
@@ -134,5 +139,5 @@ void MainScene::AddGrass()
     grass_material.m_DiffuseTexture = m_ResourceManager.GetTextureLaoder().LoadTexture("../Data/Textures/G3_Nature_Plant_Grass_06_Diffuse_01.png");
     grass->model->AddMesh(grass_position, empty_float_vec, empty_float_vec, empty_float_vec, indicies, grass_material, empty_bones);
     m_ResourceManager.AddModel(grass->model);
-    engine.m_Renderer->Subscribe(grass);
+    engine.m_Renderers[0]->Subscribe(grass);
 }
