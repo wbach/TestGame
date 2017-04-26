@@ -44,14 +44,14 @@ int MainScene::Initialize()
 
     auto terrain_textures = CreateTerrainTexturesMap();
     AddTerrain(terrain_textures);
-    AddGrass();
+   // AddGrass();
 
     m_DayNightCycle.SetDirectionalLight(&m_DirectionalLight);
     m_DayNightCycle.SetTime(.5f);
 
-    //m_Camera = std::make_unique<CFirstPersonCamera>(&engine.m_InputManager, &engine.m_DisplayManager);
+    m_Camera = std::make_unique<CFirstPersonCamera>(&engine.m_InputManager, &engine.m_DisplayManager);
 
-    m_Camera = std::make_unique<CThirdPersonCamera>(&engine.m_InputManager, player->m_WorldTransform);	
+   // m_Camera = std::make_unique<CThirdPersonCamera>(&engine.m_InputManager, player->m_WorldTransform);	
 
     return 0;
 }
@@ -124,7 +124,7 @@ void MainScene::AddTerrain(std::map<CTerrain::TexturesTypes, std::string> &textu
     m_ResourceManager.GetTextureLaoder().ReadFile(textures[CTerrain::displacementMap], height_map, TextureFlip::VERTICAL);
     terrain->LoadHeight(height_map);
 
-    terrain->model = m_ResourceManager.LoadModel("../Data/Example/quad.obj");
+    terrain->model = m_ResourceManager.LoadModel("../Data/Example/quad4x4.obj");
     m_ResourceManager.GetOpenGlLoader().AddObjectToOpenGLLoadingPass(terrain->model);
 
     AddGameObject(terrain, glm::vec3(0.f, 0.f, 0.f));
